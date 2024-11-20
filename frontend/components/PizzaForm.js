@@ -64,6 +64,9 @@ export default function PizzaForm() {
     dispatch({ type: CHANGE_TOPPING_SELECTION, id })
   }
   const resetForm = () => {
+    // PROBLEM: when the form resets it resets the state but on the site the drop down stays at the previous size rather than going back to choose size
+    // Possible solution would be using the CHANGE_SIZE component to change the value of it back to "" but I don't understand how to assign a value like that using dispatch as it's awaiting user input
+
     dispatch({ type: RESET_FORM })
   }
   const onNewOrder = (evt) => {
@@ -87,8 +90,10 @@ export default function PizzaForm() {
   return (
     <form onSubmit={onNewOrder}>
       <h2>Pizza Form</h2>
+      {/* {PROBLEM: The tests for the error messages aren't passing but look identical to the mock and seem to make sense} */}
+      {/* {Possible solution could be some sort of spelling error according to the tests specifications} */}
       {creatingPizzaOrder && <div className='pending'>Order in progress...</div>}
-      {creationError && <div className='failure'>Order failed: fullName is required</div>}
+      {creationError && <div className='failure'>Order failed: {creationError.data.message}</div>}
 
       <div className="input-group">
         <div>
