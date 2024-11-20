@@ -74,7 +74,7 @@ export default function PizzaForm() {
     console.log('toppings', toppings)
     console.log('fullName', fullName)
     console.log('size', size)
-    createPizzaOrder( fullName, size, toppings )
+    createPizzaOrder( { fullName, size, toppings } )
       .unwrap()
       .then(data => {
         console.log(data)

@@ -21,7 +21,8 @@ export default function OrderList() {
             return (
               <li key={index}>
                 <div>
-                  {/* {order.customer} ordered a size {order.size} with {order.toppings.length} {order.toppings.length === 1 ? 'topping' : 'toppings'}  */}
+                  {order.customer} ordered a size {order.size} with {order.toppings.length} {order.toppings.length === 1 ? 'topping' : 'toppings'} 
+                  {console.log('order test', order.toppings.length)}
                 </div>
               </li>
             )
