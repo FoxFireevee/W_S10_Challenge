@@ -69,6 +69,8 @@ export default function PizzaForm() {
 
     dispatch({ type: RESET_FORM })
   }
+  // RANDOM PROBLEM: Upon submitting, at random the server will send an error that the id cannot be repeated for more than one order, but as far as I am aware the middleware is supposed to be handling creating an id for the orders 
+  // Possible Solution could be making a small function that manually increases the id or randomly generate a small unique code. However there could be an issue with this if the middleware is handling an id, and we pass an id in the information and it clashes with the middleware either putting two ids failing the request altogether, or throwing an error of some sort not knowing what to do with the extra id.
   const onNewOrder = (evt) => {
     evt.preventDefault()
     console.log(state)
@@ -93,7 +95,7 @@ export default function PizzaForm() {
       {/* {PROBLEM: The tests for the error messages aren't passing but look identical to the mock and seem to make sense} */}
       {/* {Possible solution could be some sort of spelling error according to the tests specifications} */}
       {creatingPizzaOrder && <div className='pending'>Order in progress...</div>}
-      {creationError && <div className='failure'>Order failed: {creationError.data.message}</div>}
+      {creationError && <div className='failure'>{creationError.data.message}</div>}
 
       <div className="input-group">
         <div>

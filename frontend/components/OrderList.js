@@ -19,7 +19,7 @@ export default function OrderList() {
             return (
               <li key={index}>
                 <div>
-                  {/* {If there are toppings it works just fine but even one order that has no toppings in the array, it freaks out with the length error. So half solved? I read about and added in the ?. before the length to catch if it a length of 0 or not to try to save it. No avail though.} */}
+                  {/* {PROBLEM: If there are toppings it works just fine but even one order that has no toppings in the array, it freaks out with the length error. So half solved? I read about and added in the ?. before the length to catch if it a length of 0 or not to try to save it. No avail though.} */}
                   {order.customer} ordered a size {order.size} with {(order.toppings?.length || 0)} {order.toppings?.length === 1 ? 'topping' : 'toppings'} 
                   {/* {Log throws error but returns desired result still} */}
                   {/* {console.log('order test', order.toppings.length)} */}
