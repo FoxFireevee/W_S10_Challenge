@@ -16,7 +16,10 @@ const initialFormState = { // suggested
   '5': false,
 }
 
+let chosenToppings = [];
+
 const reducer = (state, action) => {
+  console.log("yoooo", state)
   switch (action.type) {
     case CHANGE_INPUT: {
       const { name, value } = action.payload
@@ -44,6 +47,7 @@ const reducer = (state, action) => {
     }
   }
 
+  console.log('what is going on', chosenToppings)
 
 export default function PizzaForm() {
   const [state, dispatch] = useReducer(reducer, initialFormState)
@@ -55,6 +59,8 @@ export default function PizzaForm() {
     dispatch({ type: CHANGE_SIZE, payload: { name, value } })
   }
   const onChangeTopping = (id) => {
+    chosenToppings.push(`${id}`)
+    console.log('did i update?', chosenToppings)
     dispatch({ type: CHANGE_TOPPING_SELECTION, id })
   }
   const resetForm = () => {
@@ -63,7 +69,12 @@ export default function PizzaForm() {
   const onNewOrder = (evt) => {
     evt.preventDefault()
     console.log(state)
-    createPizzaOrder(state)
+    const  toppings  = chosenToppings
+    const { fullName, size } = state
+    console.log('toppings', toppings)
+    console.log('fullName', fullName)
+    console.log('size', size)
+    createPizzaOrder( fullName, size, toppings )
       .unwrap()
       .then(data => {
         console.log(data)
