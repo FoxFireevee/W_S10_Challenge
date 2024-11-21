@@ -16,7 +16,6 @@ const initialFormState = { // suggested
   '5': false,
 }
 
-let chosenToppings = [];
 
 const reducer = (state, action) => {
   console.log("yoooo", state)
@@ -47,7 +46,6 @@ const reducer = (state, action) => {
     }
   }
 
-  console.log('what is going on', chosenToppings)
 
 export default function PizzaForm() {
   const [state, dispatch] = useReducer(reducer, initialFormState)
@@ -59,14 +57,9 @@ export default function PizzaForm() {
     dispatch({ type: CHANGE_SIZE, payload: { name, value } })
   }
   const onChangeTopping = (id) => {
-    chosenToppings.push(`${id}`)
-    console.log('did i update?', chosenToppings)
     dispatch({ type: CHANGE_TOPPING_SELECTION, id })
   }
   const resetForm = () => {
-    // PROBLEM: when the form resets it resets the state but on the site the drop down stays at the previous size rather than going back to choose size
-    // Possible solution would be using the CHANGE_SIZE component to change the value of it back to "" but I don't understand how to assign a value like that using dispatch as it's awaiting user input
-
     dispatch({ type: RESET_FORM })
   }
   // RANDOM PROBLEM: Upon submitting, at random the server will send an error that the id cannot be repeated for more than one order, but as far as I am aware the middleware is supposed to be handling creating an id for the orders 
@@ -74,7 +67,18 @@ export default function PizzaForm() {
   const onNewOrder = (evt) => {
     evt.preventDefault()
     console.log(state)
-    const  toppings  = chosenToppings
+    const numbers = ['1', '2', '3', '4', '5']
+    const  toppings  = []
+    // Map over the toppings and keep the true values
+    numbers.map(num => {
+      if(state[num] === true) {
+        toppings.push(num)
+      }
+      console.log("I am your toppings", toppings)
+      console.log("I am your num", num)
+      console.log("I am your stateNum", state[num])
+      return toppings
+    })
     const { fullName, size } = state
     console.log('toppings', toppings)
     console.log('fullName', fullName)
@@ -95,7 +99,7 @@ export default function PizzaForm() {
       {/* {PROBLEM: The tests for the error messages aren't passing but look identical to the mock and seem to make sense} */}
       {/* {Possible solution could be some sort of spelling error according to the tests specifications} */}
       {creatingPizzaOrder && <div className='pending'>Order in progress...</div>}
-      {creationError && <div className='failure'>{creationError.data.message}</div>}
+      {creationError && <div className='failure'>Order Failed: {creationError.data.message}</div>}
 
       <div className="input-group">
         <div>
@@ -115,7 +119,7 @@ export default function PizzaForm() {
       <div className="input-group">
         <div>
           <label htmlFor="size">Size</label><br />
-          <select data-testid="sizeSelect" id="size" name="size" onChange={onChangeSize}>
+          <select data-testid="sizeSelect" id="size" name="size" onChange={onChangeSize} value={state.size}>
             <option value="">----Choose size----</option>
             <option value="S">Small</option>
             <option value="M">Medium</option>
